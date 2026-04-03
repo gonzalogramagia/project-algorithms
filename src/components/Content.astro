@@ -6,6 +6,8 @@ import IconLink from "@/components/IconLink.astro";
 import CustomLink from "@/components/CustomLink.astro";
 import NavigationLink from "@/components/NavigationLink.astro";
 
+import { useTranslations } from "@/i18n/utils";
+
 interface Props {
   title?: string;
   bio?: string;
@@ -15,6 +17,8 @@ interface Props {
   hideCountdown?: boolean;
 }
 
+const lang = Astro.currentLocale as "es" | "en" || "es";
+const t = useTranslations(lang);
 const { title, bio, links = SITE.customLinks, profileImage, imageScale, hideCountdown = false } = Astro.props;
 
 // Determine if we should place bottom link in penultimate position
