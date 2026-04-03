@@ -9,6 +9,7 @@ export default defineConfig({
   redirects: {
     "/blog": "/",
   },
-  site: "https://algoritmos1.com",
+  site: "https://gonzalogramagia.github.io",
+  base: "/project-algorithms",
   integrations: [tailwind(), sitemap(), icon()],
 });
