@@ -29,6 +29,7 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
 
 <ul id="custom-links-list" 
     class="grid gap-y-6 pb-12 pt-4 text-center"
+    data-base-url={import.meta.env.BASE_URL}
     data-default-top-chess={t("default_top_chess")}
     data-default-bottom-pasos={t("default_bottom_pasos")}
     data-default-bottom-clases={t("default_bottom_clases")}
@@ -78,12 +79,9 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
 
 <script>
   function applyConfig() {
-    const path = window.location.pathname;
-    let key = 'appConfig';
-    if (path.startsWith('/clases')) key = 'clasesConfig';
-    if (path.startsWith('/salud')) key = 'saludConfig';
-
     const list = document.getElementById('custom-links-list');
+    const baseUrl = (list?.getAttribute('data-base-url') || '/').replace(/\/$/, '') + '/';
+    
     const defaultLabels = {
       chess: list?.getAttribute('data-default-top-chess'),
       pasos: list?.getAttribute('data-default-bottom-pasos'),
@@ -92,76 +90,40 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
       bienestar: list?.getAttribute('data-default-bottom-bienestar')
     };
 
-    // Initialize default links for salud if not set
-    if (key === 'saludConfig') {
-      const existingConfig = JSON.parse(localStorage.getItem(key) || '{}');
-      
-      // Set default top link if not exists
-      if (!existingConfig.topLink || (!existingConfig.topLink.title && !existingConfig.topLink.url)) {
-        existingConfig.topLink = {
-          title: defaultLabels.chess,
-          url: 'https://ajedrezfamaf.com/'
-        };
-      }
-      
-      // Set default bottom link if not exists
-      if (!existingConfig.bottomLink || (!existingConfig.bottomLink.title && !existingConfig.bottomLink.url)) {
-        existingConfig.bottomLink = {
-          title: defaultLabels.pasos,
-          url: 'https://unc.edu.ar/vida-estudiantil/pasos'
-        };
-      }
-      
-      localStorage.setItem(key, JSON.stringify(existingConfig));
-    }
-
-    // Initialize default bottom link for clases if not set
-    if (key === 'clasesConfig') {
-      const existingConfig = JSON.parse(localStorage.getItem(key) || '{}');
-      
-      // Set default bottom link if not exists
-      if (!existingConfig.bottomLink || (!existingConfig.bottomLink.title && !existingConfig.bottomLink.url)) {
-        existingConfig.bottomLink = {
-          title: defaultLabels.clases,
-          url: '/config'
-        };
-        localStorage.setItem(key, JSON.stringify(existingConfig));
-      }
-    }
-
-    // Initialize default bottom link for home page if not set
-    if (key === 'appConfig') {
-      const existingConfig = JSON.parse(localStorage.getItem(key) || '{}');
-      
-      // Set default top link if not exists
-      if (!existingConfig.topLink || (!existingConfig.topLink.title && !existingConfig.topLink.url)) {
-        existingConfig.topLink = {
-          title: defaultLabels.guarani,
-          url: 'https://autogestion.guarani.unc.edu.ar/'
-        };
-      }
-      
-      // Set default bottom link if not exists
-      if (!existingConfig.bottomLink || (!existingConfig.bottomLink.title && !existingConfig.bottomLink.url)) {
-        existingConfig.bottomLink = {
-          title: defaultLabels.bienestar,
-          url: '/salud'
-        };
-      }
-      
-      localStorage.setItem(key, JSON.stringify(existingConfig));
-    }
+    const path = window.location.pathname;
+    let key = 'appConfig';
+    if (path.includes('/clases')) key = 'clasesConfig';
+    if (path.includes('/salud')) key = 'saludConfig';
 
     const config = JSON.parse(localStorage.getItem(key) || '{}');
     
+    // Determine defaults based on page
+    let defaultTop = { title: '', url: '' };
+    let defaultBottom = { title: '', url: '' };
+
+    if (key === 'saludConfig') {
+      defaultTop = { title: defaultLabels.chess, url: 'https://ajedrezfamaf.com/' };
+      defaultBottom = { title: defaultLabels.pasos, url: 'https://unc.edu.ar/vida-estudiantil/pasos' };
+    } else if (key === 'clasesConfig') {
+      defaultBottom = { title: defaultLabels.clases, url: '#' }; // Or some other default
+    } else {
+      // Home page
+      defaultTop = { title: defaultLabels.guarani, url: 'https://autogestion.guarani.unc.edu.ar/' };
+      defaultBottom = { title: defaultLabels.bienestar, url: baseUrl + 'salud' };
+    }
+
     // Top Link
     const topItem = document.getElementById('top-link-item');
     const topAnchor = document.getElementById('top-link-anchor') as HTMLAnchorElement;
     if (topItem && topAnchor) {
-        if (config.topLink && config.topLink.title && config.topLink.url) {
+        // Use user config if it has BOTH title and url, otherwise use default if it exists
+        const displayTitle = (config.topLink && config.topLink.title) ? config.topLink.title : defaultTop.title;
+        const displayUrl = (config.topLink && config.topLink.url) ? config.topLink.url : defaultTop.url;
+
+        if (displayTitle && displayUrl) {
             topItem.classList.remove('hidden');
-            topAnchor.innerText = config.topLink.title;
-            topAnchor.href = config.topLink.url;
+            topAnchor.innerText = displayTitle;
+            topAnchor.href = displayUrl;
         } else {
             topItem.classList.add('hidden');
         }
@@ -171,10 +133,13 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
     const bottomItem = document.getElementById('bottom-link-item');
     const bottomAnchor = document.getElementById('bottom-link-anchor') as HTMLAnchorElement;
     if (bottomItem && bottomAnchor) {
-        if (config.bottomLink && config.bottomLink.title && config.bottomLink.url) {
+        const displayTitle = (config.bottomLink && config.bottomLink.title) ? config.bottomLink.title : defaultBottom.title;
+        const displayUrl = (config.bottomLink && config.bottomLink.url) ? config.bottomLink.url : defaultBottom.url;
+
+        if (displayTitle && displayUrl) {
             bottomItem.classList.remove('hidden');
-            bottomAnchor.innerText = config.bottomLink.title;
-            bottomAnchor.href = config.bottomLink.url;
+            bottomAnchor.innerText = displayTitle;
+            bottomAnchor.href = displayUrl;
         } else {
             bottomItem.classList.add('hidden');
         }
