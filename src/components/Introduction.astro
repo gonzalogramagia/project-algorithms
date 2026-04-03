@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 
-import { SITE } from "@/siteConfig";
+import { useTranslations } from "@/i18n/utils";
 
 import profilePictureSrc from "@/assets/algoritmos.png";
 import profilePictureDarkSrc from "@/assets/algoritmos-dark.png";
@@ -14,7 +14,10 @@ interface Props {
   hideCountdown?: boolean;
 }
 
-const { title = SITE.name, bio = SITE.bio, profileImage, imageScale = 'scale-100', hideCountdown = false } = Astro.props;
+const lang = Astro.currentLocale as "es" | "en" || "es";
+const t = useTranslations(lang);
+
+const { title = t("name"), bio = t("bio"), profileImage, imageScale = 'scale-100', hideCountdown = false } = Astro.props;
 const profilePicture = profilePictureSrc;
 const profilePictureDark = profilePictureDarkSrc;
 ---
@@ -63,16 +66,27 @@ const profilePictureDark = profilePictureDarkSrc;
   </div> */}
   
   {!hideCountdown && (
-    <div id="countdown-container" class="countdown-container text-center py-4 mt-8">
-      <h2 class="text-2xl font-bold mb-4 text-brand" id="countdown-title">MESA DE FINAL (10 DE FEBRERO)</h2>
+    <div 
+      id="countdown-container" 
+      class="countdown-container text-center py-4 mt-8"
+      data-label-days={t("days")}
+      data-label-hours={t("hours")}
+      data-label-min={t("minutes")}
+      data-label-secs={t("seconds")}
+      data-label-next={t("next")}
+      data-label-final={t("final_exam")}
+      data-label-completed={t("finals_completed")}
+      data-label-waiting={t("waiting_dates")}
+    >
+      <h2 class="text-2xl font-bold mb-4 text-brand" id="countdown-title">--</h2>
       <div class="countdown-timer text-lg font-mono p-4 mx-4">
-        <span id="days">--</span> días, 
-        <span id="hours">--</span> horas, 
-        <span id="minutes">--</span> min,
-        <span id="seconds">--</span> segs
+        <span id="days">--</span> <span class="text-sm opacity-70">{t("days")}</span>, 
+        <span id="hours">--</span> <span class="text-sm opacity-70">{t("hours")}</span>, 
+        <span id="minutes">--</span> <span class="text-sm opacity-70">{t("minutes")}</span>,
+        <span id="seconds">--</span> <span class="text-sm opacity-70">{t("seconds")}</span>
       </div>
       <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-        <p class="text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wide" id="next-parcial-info">PRÓXIMO: MESA DE FINAL (24 DE FEBRERO)</p>
+        <p class="text-xs text-gray-500 dark:text-gray-500 uppercase tracking-wide" id="next-parcial-info">--</p>
       </div>
     </div>
   )}
@@ -95,6 +109,20 @@ const profilePictureDark = profilePictureDarkSrc;
 <script>
   function initIntroduction() {
     function updateCountdown() {
+      const container = document.getElementById('countdown-container');
+      if (!container) return;
+
+      const labels = {
+        days: container.getAttribute('data-label-days'),
+        hours: container.getAttribute('data-label-hours'),
+        min: container.getAttribute('data-label-min'),
+        secs: container.getAttribute('data-label-secs'),
+        next: container.getAttribute('data-label-next'),
+        final: container.getAttribute('data-label-final'),
+        completed: container.getAttribute('data-label-completed'),
+        waiting: container.getAttribute('data-label-waiting')
+      };
+
       // Fechas de los finales (hora 10:00 -03:00)
       const final1 = new Date('2026-02-10T10:00:00-03:00'); // MESA DE FINAL 1
       const final2 = new Date('2026-02-24T10:00:00-03:00'); // MESA DE FINAL 2
@@ -106,16 +134,16 @@ const profilePictureDark = profilePictureDarkSrc;
 
       if (now < final1) {
         targetDate = final1;
-        title = "MESA DE FINAL (10 DE FEBRERO)";
-        nextInfo = "PRÓXIMO: MESA DE FINAL (24 DE FEBRERO)";
+        title = `${labels.final} (10 FEB)`;
+        nextInfo = `${labels.next}: ${labels.final} (24 FEB)`;
       } else if (now < final2) {
         targetDate = final2;
-        title = "MESA DE FINAL (24 DE FEBRERO)";
-        nextInfo = "Esperando próximas fechas";
+        title = `${labels.final} (24 FEB)`;
+        nextInfo = labels.waiting;
       } else {
         targetDate = final2;
-        title = "Finales Completados";
-        nextInfo = "Esperando próximas fechas";
+        title = labels.completed;
+        nextInfo = labels.waiting;
       }
       
       const difference = targetDate.getTime() - now.getTime();
@@ -128,10 +156,10 @@ const profilePictureDark = profilePictureDarkSrc;
       if(infoEl) infoEl.textContent = nextInfo;
       
       if (difference <= 0) {
-        if(document.getElementById('days')) document.getElementById('days').textContent = '0';
-        if(document.getElementById('hours')) document.getElementById('hours').textContent = '0';
-        if(document.getElementById('minutes')) document.getElementById('minutes').textContent = '0';
-        if(document.getElementById('seconds')) document.getElementById('seconds').textContent = '0';
+        ['days', 'hours', 'minutes', 'seconds'].forEach(id => {
+           const el = document.getElementById(id);
+           if (el) el.textContent = '00';
+        });
         return;
       }
       

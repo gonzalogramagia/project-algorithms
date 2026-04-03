@@ -9,6 +9,9 @@ import { SITE } from "@/siteConfig";
 import { Image } from "astro:assets";
 import wallpaper from "@/assets/wallpaper.png";
 
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations } from "@/i18n/utils";
+
 interface Props {
   title?: string;
   floatingButtonUrl?: string;
@@ -17,16 +20,19 @@ interface Props {
   floatingButtonIconTransform?: string;
 }
 
+const lang = Astro.currentLocale as "es" | "en" || "es";
+const t = useTranslations(lang);
+
 const { 
-  title = SITE.name, 
+  title = t("name"), 
   floatingButtonUrl = "https://github.com/gonzalogramagia/project-algorithms",
   floatingButtonIcon = "github",
-  floatingButtonLabel = "Ir al repo de GitHub",
+  floatingButtonLabel = t("repo"),
   floatingButtonIconTransform = ""
 } = Astro.props;
 ---
 
-<html lang="en">
+<html lang={lang}>
   <BaseHead title={title}>
     <slot name="head" />
   </BaseHead>
@@ -44,6 +50,7 @@ const {
         />
     </div>
     <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-50 mx-auto max-w-screen-sm inset-x-0">
+        <ConfigModal />
         <a
         href={floatingButtonUrl}
         target="_blank"
@@ -57,7 +64,6 @@ const {
         />
         </a>
     </div>
-    <ConfigModal />
     <Footer />
   </body>
 </html>

@@ -1,12 +1,16 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
 const { url, text } = Astro.props;
+const lang = Astro.currentLocale as "es" | "en" || "es";
 
 const hasLinkEmoji = text && text.includes('🔗');
 const isInternal = url && url.startsWith('/');
+const href = isInternal ? getRelativeLocaleUrl(lang, url) : url;
 ---
 
 <a
-  href={url}
+  href={href}
   {...(hasLinkEmoji || isInternal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
   class={`hover:bg-lightModeCustomLinkBackgroundHover dark:hover:bg-darkModeCustomLinkBackgroundHover hover:ring-lightModeCustomLinkOutlineHover dark:hover:ring-darkModeCustomLinkOutlineHover hover:text-lightModeCustomLinkTextHover dark:hover:text-darkModeCustomLinkTextHover flex items-center justify-center gap-2 rounded-full bg-lightModeCustomLinkBackground px-6 py-3 text-lg text-lightModeCustomLinkText ring-2 ring-lightModeCustomLinkOutline transition-all duration-200 ease-in-out hover:scale-105 dark:bg-darkModeCustomLinkBackground dark:text-darkModeCustomLinkText dark:ring-darkModeCustomLinkOutline ${hasLinkEmoji ? 'underline underline-offset-4' : ''}`}
 >

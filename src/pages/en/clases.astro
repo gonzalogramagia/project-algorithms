@@ -4,28 +4,28 @@ import Content from "@/components/Content.astro";
 import SeoPage from "@/components/SeoPage.astro";
 import { useTranslations } from "@/i18n/utils";
 
-const lang = Astro.currentLocale as "es" | "en" || "es";
+const lang = "en";
 const t = useTranslations(lang);
 
 const customLinks = [
     {
-      "id": "1728534585739",
-      "title": "🎥 Teórico de Programación FUNCIONAL (Franco Luque)",
+      "id": "1",
+      "title": "🎥 FUNCTIONAL Programming (Franco Luque)",
       "url": "https://youtube.com/playlist?list=PLLswL1pDm9IySjKob9nqV9xzlQlfHf1T_"
     },
     {
-      "id": "1728534585740",
-      "title": "🎥 Teórico de Programación IMPERATIVA (Franco Luque)",
+      "id": "2",
+      "title": "🎥 IMPERATIVE Programming (Franco Luque)",
       "url": "https://youtube.com/playlist?list=PLLswL1pDm9IyEJ1zCLOs8qpEJLtPE_eqE"
     },
     {
-      "id": "1728534585741",
-      "title": "🎥 LAB de Programación Imperativa (Ale Gadea)",
+      "id": "3",
+      "title": "🎥 Imperative Programming LAB (Ale Gadea)",
       "url": "https://youtube.com/playlist?list=PLLswL1pDm9Ix-uLjXPcfZN_m59luQYVhy"
     },
     {
-      "id": "1728534585742",
-      "title": "🎥 Práctico de Programación Imperativa (Franco Luque)",
+      "id": "4",
+      "title": "🎥 Imperative Programming Practice (Franco Luque)",
       "url": "https://youtube.com/playlist?list=PLLswL1pDm9Iwlb_XFikf9HUiRlLPzFjuW"
     },
     {
@@ -39,16 +39,15 @@ const customLinks = [
 <BaseLayout
   floatingButtonUrl="https://youtube.com/@goalritmo/playlists"
   floatingButtonIcon="lucide:play"
-  floatingButtonLabel="Playlists de YouTube"
+  floatingButtonLabel="YouTube Playlists"
 >
-  <SeoPage slot="head" title="Clases de Algoritmos I" />
+  <SeoPage slot="head" title="Algorithms I Classes" />
   <main>
     <Content 
-        title="Clases de Algoritmos I"
-        bio="Computación FAMAF"
+        title="Algorithms I Classes"
+        bio="FAMAF Computing"
         links={customLinks}
     />
-    <!-- Spacer to match index layout consistency -->
     <div class="py-4"></div>
   </main>
 </BaseLayout>

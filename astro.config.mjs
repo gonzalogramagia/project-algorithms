@@ -11,5 +11,9 @@ export default defineConfig({
   },
   site: "https://gonzalogramagia.github.io",
   base: "/project-algorithms",
+  i18n: {
+    defaultLocale: "es",
+    locales: ["es", "en"],
+  },
   integrations: [tailwind(), sitemap(), icon()],
 });

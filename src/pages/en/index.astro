@@ -1,16 +1,12 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-
-import { SITE } from "@/siteConfig";
-
 import BaseLayout from "@/layouts/BaseLayout.astro";
-
 import Content from "@/components/Content.astro";
 import Post from "@/components/Post.astro";
 import SeoPage from "@/components/SeoPage.astro";
 import { useTranslations } from "@/i18n/utils";
 
-const lang = Astro.currentLocale as "es" | "en" || "es";
+const lang = "en";
 const t = useTranslations(lang);
 
 const posts = (await getCollection("blog"))
@@ -19,14 +15,23 @@ const posts = (await getCollection("blog"))
     (a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) =>
       b.data.publicationDate.valueOf() - a.data.publicationDate.valueOf(),
   );
+
+// Translate links for the English version
+const englishLinks = [
+  { id: "1", title: "🏫 Virtual Classroom", url: "https://famaf.aulavirtual.unc.edu.ar/course/view.php?id=571" },
+  { id: "2", title: "🔗 Virtual Classes →", url: "/clases" },
+  { id: "3", title: "✍ Past Exams", url: "https://examenes-viejos.pages.dev/ac/algoritmos-y-estructuras-de-datos-1/" },
+  { id: "4", title: "🗂 Assignments & Resources", url: "https://drive.google.com/drive/folders/1odI63xoTAlPWNU_y-2jQhQGhHFE2DNBW?usp=sharing" },
+  { id: "5", title: "📝 Lecture Notes", url: "https://francolq.github.io/algo1/" }
+];
 ---
 
-<BaseLayout>
+<BaseLayout title={t("name")}>
   <SeoPage slot="head" />
   <main>
-    <Content />
+    <Content links={englishLinks} />
     {
-      SITE.blog ? (
+      posts.length > 0 ? (
         <ul class="grid list-none gap-y-8 px-0 py-4">
           {posts.map((post: CollectionEntry<"blog">) => (
             <Post post={post} />

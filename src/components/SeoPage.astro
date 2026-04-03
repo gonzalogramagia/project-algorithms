@@ -1,12 +1,16 @@
 ---
-import { SITE } from "@/siteConfig.ts";
+import { useTranslations } from "@/i18n/utils";
+import { SITE } from "@/siteConfig";
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const { title = SITE.name, description = SITE.bio } = Astro.props;
+const lang = Astro.currentLocale as "es" | "en" || "es";
+const t = useTranslations(lang);
+
+const { title = t("name"), description = t("bio") } = Astro.props;
 ---
 
 <title>{title}</title>
@@ -16,7 +20,7 @@ const { title = SITE.name, description = SITE.bio } = Astro.props;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content="website" />
-<meta property="og:locale" content={SITE.locale} />
+<meta property="og:locale" content={lang} />
 
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />

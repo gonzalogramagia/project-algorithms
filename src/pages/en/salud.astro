@@ -4,28 +4,28 @@ import Content from "@/components/Content.astro";
 import wellbeingImage from "@/assets/wellbeing.jpg";
 import { useTranslations } from "@/i18n/utils";
 
-const lang = Astro.currentLocale as "es" | "en" || "es";
+const lang = "en";
 const t = useTranslations(lang);
 
 const saludLinks = [
     {
-      "id": "1728534585737",
-      "title": "⚽ Grilla de Deportes",
+      "id": "1",
+      "title": "⚽ Sports Grid",
       "url": "https://unc.edu.ar/vida-estudiantil/deportes-unc-2025"
     },
     {
-      "id": "1728534585738",
-      "title": "💪 Horarios del Gimnasio",
+      "id": "2",
+      "title": "💪 Gym Schedules",
       "url": "https://instagram.com/p/DIe5x1qyWiG/"
     },
     {
-      "id": "1728534585739",
-      "title": "🍎 Comedor Universitario",
+      "id": "3",
+      "title": "🍎 University Dining",
       "url": "https://unc.edu.ar/vida-estudiantil/comedor-universitario-2025"
     },
     {
-      "id": "1728534585740",
-      "title": "🧭 Trayectorias Estudiantiles",
+      "id": "4",
+      "title": "🧭 Student Paths",
       "url": "https://unc.edu.ar/vida-estudiantil/trayectorias-acad%C3%A9micas-estudiantiles"
     },
     {
@@ -37,7 +37,7 @@ const saludLinks = [
 ---
 
 <BaseLayout 
-  title="Bienestar Estudiantil"
+  title="Student Wellbeing"
   floatingButtonUrl="https://entrenar.app/"
   floatingButtonIcon="lucide:dumbbell"
   floatingButtonLabel="Entrenar App"
@@ -45,8 +45,8 @@ const saludLinks = [
 >
   <main>
     <Content 
-        title="Bienestar Estudiantil"
-        bio="Computación FAMAF"
+        title="Student Wellbeing"
+        bio="FAMAF Computing"
         links={saludLinks}
         profileImage={wellbeingImage}
         imageScale="scale-100"

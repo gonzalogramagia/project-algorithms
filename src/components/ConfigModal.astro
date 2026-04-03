@@ -1,5 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
+import { useTranslations } from "@/i18n/utils";
+import LanguagePicker from "@/components/LanguagePicker.astro";
+
+const lang = Astro.currentLocale as "es" | "en" || "es";
+const t = useTranslations(lang);
 ---
 
 <!-- Floating Config Button -->
@@ -8,7 +13,7 @@ import { Icon } from "astro-icon/components";
     <button
       id="config-toggle-btn"
       class="absolute pointer-events-auto top-8 left-8 flex items-center justify-center rounded-full border border-gray-200 bg-white p-3 shadow-lg transition-all hover:scale-110 hover:shadow-xl group dark:bg-gray-800 dark:border-gray-700"
-      aria-label="Abrir configuración"
+      aria-label={t("config_open")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -30,12 +35,15 @@ import { Icon } from "astro-icon/components";
 <!-- Config Modal -->
 <dialog
   id="config-modal"
-  class="fixed inset-0 z-50 m-auto w-full max-w-sm rounded-xl border border-gray-200 bg-white p-0 shadow-2xl backdrop:bg-black/50 dark:border-gray-700 dark:bg-gray-800 focus:outline-none"
+  class="fixed inset-0 z-50 m-auto w-full max-w-sm rounded-xl border border-gray-200 bg-white p-0 shadow-2xl backdrop:bg-black/50 dark:border-gray-700 dark:bg-gray-800 focus:outline-none pointer-events-auto"
+  data-label-config={t("config_title")}
+  data-label-clases={t("clases")}
+  data-label-health={t("config_title")}
 >
   <div class="relative flex flex-col max-h-[90vh]">
     <!-- Header -->
     <div class="flex items-center justify-between border-b border-gray-100 p-4 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Configuración</h2>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{t("config_title")}</h2>
       <button
         id="close-config-btn"
         class="rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600"
@@ -47,12 +55,27 @@ import { Icon } from "astro-icon/components";
     <!-- Body -->
     <div class="flex-1 overflow-y-auto p-4 space-y-6">
       
-
+      <!-- Language Switch -->
+      <div class="space-y-4">
+        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t("config_language")}</h3>
+        <label class="flex items-center justify-between cursor-pointer group">
+          <div class="flex items-center gap-2">
+            <div class="relative w-5 h-5 flex items-center justify-center text-gray-500 dark:text-gray-400 group-hover:text-brand dark:group-hover:text-brand transition-colors">
+              <Icon name="lucide:languages" class="w-5 h-5" />
+            </div>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">English Language</span>
+          </div>
+          <div class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="switch-language" class="sr-only peer" checked={lang === 'en'}>
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-brand dark:peer-focus:ring-brand rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-brand"></div>
+          </div>
+        </label>
+      </div>
 
       <!-- Switches -->
       <div class="space-y-4">
-        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Visibilidad</h3>
-        <p class="text-xs text-slate-500 mb-2">Controla qué elementos quieres ver en tu pantalla.</p>
+        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t("config_visibility")}</h3>
+        <p class="text-xs text-slate-500 mb-2">{t("config_visibility_desc")}</p>
 
         <label class="flex items-center justify-between cursor-pointer group" id="countdown-switch-container">
           <div class="flex items-center gap-2">
@@ -60,7 +83,7 @@ import { Icon } from "astro-icon/components";
                  <Icon name="lucide:timer" id="icon-countdown-on" class="absolute w-5 h-5 transition-all scale-100" />
                  <Icon name="lucide:timer-off" id="icon-countdown-off" class="absolute w-5 h-5 transition-all scale-0 hidden" />
             </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Cuenta Regresiva</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{t("config_countdown")}</span>
           </div>
           <div class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" id="switch-countdown" class="sr-only peer" checked>
@@ -74,7 +97,7 @@ import { Icon } from "astro-icon/components";
                 <Icon name="lucide:moon" id="icon-darkmode-on" class="absolute w-5 h-5 transition-all scale-100 rotate-0" />
                 <Icon name="lucide:sun" id="icon-darkmode-off" class="absolute w-5 h-5 transition-all scale-0 rotate-90 hidden" />
              </div>
-             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Modo Oscuro</span>
+             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{t("config_darkmode")}</span>
           </div>
           <div class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" id="switch-darkmode" class="sr-only peer">
@@ -87,29 +110,29 @@ import { Icon } from "astro-icon/components";
 
       <!-- Links Editing -->
       <div class="space-y-4">
-        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Enlaces Personalizados</h3>
+        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t("config_custom_links")}</h3>
         <div class="space-y-4">
             
             <!-- Link Superior -->
             <div class="p-3 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 space-y-2 relative group">
                 <div class="flex items-center gap-2">
-                    <input type="text" id="input-top-title" placeholder="Título Link Superior (Arriba)" class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <input type="text" id="input-top-title" placeholder={t("config_top_link_placeholder")} class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     <button id="clear-top-link" class="text-gray-400 hover:text-red-500 transition-colors p-1" aria-label="Eliminar link superior" title="Eliminar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                     </button>
                 </div>
-                <input type="text" id="input-top-url" placeholder="URL: https://www..." class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <input type="text" id="input-top-url" placeholder={t("config_url_placeholder")} class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             </div>
 
             <!-- Link Inferior -->
             <div class="p-3 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 space-y-2 relative group">
                  <div class="flex items-center gap-2">
-                    <input type="text" id="input-bottom-title" placeholder="Título Link Inferior (Abajo)" class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <input type="text" id="input-bottom-title" placeholder={t("config_bottom_link_placeholder")} class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
                     <button id="clear-bottom-link" class="text-gray-400 hover:text-red-500 transition-colors p-1" aria-label="Eliminar link inferior" title="Eliminar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                     </button>
                 </div>
-                <input type="text" id="input-bottom-url" placeholder="URL: https://www..." class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                <input type="text" id="input-bottom-url" placeholder={t("config_url_placeholder")} class="link-input block w-full rounded border-gray-300 bg-white p-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
             </div>
 
         </div>
@@ -123,7 +146,7 @@ import { Icon } from "astro-icon/components";
         id="close-modal-footer-btn"
         class="w-full rounded-lg bg-brand px-5 py-2.5 text-center text-sm font-medium text-white hover:brightness-90 focus:outline-none focus:ring-4 focus:ring-brand dark:bg-brand dark:hover:brightness-90 dark:focus:ring-brand"
       >
-        Listo
+        {t("config_done")}
       </button>
     </div>
   </div>
@@ -158,10 +181,34 @@ import { Icon } from "astro-icon/components";
      loadConfig();
      setupEventListeners();
      
-     // Auto-open modal if coming from /config
+     // Auto-open modal if coming from /config or language change
      if (sessionStorage.getItem('openConfigModal') === 'true') {
        sessionStorage.removeItem('openConfigModal');
        modal?.showModal();
+     }
+
+     const switchLanguage = document.getElementById('switch-language') as HTMLInputElement;
+     if (switchLanguage) {
+        switchLanguage.addEventListener('change', () => {
+             const isEnglish = switchLanguage.checked;
+             const path = window.location.pathname;
+             const base = import.meta.env.BASE_URL.replace(/\/$/, ''); // Ensure no trailing slash
+             
+             let newPath = '';
+             if (isEnglish) {
+                 // From ES to EN
+                 newPath = path.replace(base, `${base}/en`);
+             } else {
+                 // From EN to ES
+                 newPath = path.replace(`${base}/en`, base);
+             }
+             
+             // Ensure we don't end up with //
+             newPath = newPath.replace(/\/+/g, '/');
+             
+             sessionStorage.setItem('openConfigModal', 'true');
+             window.location.href = newPath;
+        });
      }
   }
 

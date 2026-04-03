@@ -1,0 +1,37 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SeoPage from '@/components/SeoPage.astro';
+---
+
+<BaseLayout>
+  <SeoPage slot="head" title="Information — Requirements and Dates" />
+  <main class="prose mx-auto max-w-3xl px-6 py-12 dark:prose-invert">
+    <h1>Course Requirements</h1>
+
+    <h2>Regularity</h2>
+    <p>
+      • Pass both laboratory partial exams, or their corresponding retake
+      (only one retake allowed).
+    </p>
+
+    <h2>Promotion</h2>
+    <p>
+      • Pass both laboratory partial exams, or their corresponding retake
+      (only one retake allowed).
+    </p>
+    <p>
+      • Pass both partial exams with a grade not less than 6 (six), and obtaining an
+      average not less than 7 (seven) (only one retake allowed).
+    </p>
+
+    <h2>Exam Dates</h2>
+    <ul>
+      <li><strong>2nd LAB PARTIAL:</strong> 11/03/2025</li>
+      <li><strong>LAB RETAKE:</strong> 11/10/2025</li>
+      <li><strong>2nd PARTIAL:</strong> 11/17/2025</li>
+      <li><strong>PROMOTION RETAKE:</strong> 11/20/2025</li>
+    </ul>
+
+    <p class="text-sm text-gray-500">Last updated: October 14, 2025</p>
+  </main>
+</BaseLayout>
