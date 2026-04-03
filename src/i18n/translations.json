@@ -31,7 +31,17 @@
     "config_bottom_link_placeholder": "Título Link Inferior (Abajo)",
     "config_url_placeholder": "URL: https://www...",
     "config_done": "Listo",
-    "back": "⬅ Volver atrás"
+    "back": "⬅ Volver atrás",
+    "en_lang": "Idioma Inglés",
+    "config_clases": "Configuración (Clases)",
+    "config_salud": "Configuración (Salud)",
+    "default_top_chess": "<⚙/> Taller de Ajedrez",
+    "default_bottom_pasos": "<⚙/> Obra Social PASOS",
+    "default_bottom_clases": "<⚙/> Click para agregar tus propios links",
+    "default_top_guarani": "<⚙/> Autogestión (Guaraní UNC)",
+    "default_bottom_bienestar": "🔗 Bienestar Estudiantil",
+    "delete": "Eliminar",
+    "language_picker": "Cambiar idioma"
   },
   "en": {
     "name": "Algorithms I",
@@ -65,6 +75,16 @@
     "config_bottom_link_placeholder": "Bottom Link Title (Down)",
     "config_url_placeholder": "URL: https://www...",
     "config_done": "Done",
-    "back": "⬅ Go back"
+    "back": "⬅ Go back",
+    "en_lang": "English Language",
+    "config_clases": "Settings (Classes)",
+    "config_salud": "Settings (Health)",
+    "default_top_chess": "<⚙/> Chess Workshop",
+    "default_bottom_pasos": "<⚙/> PASOS Health Plan",
+    "default_bottom_clases": "<⚙/> Click to add your own links",
+    "default_top_guarani": "<⚙/> Student Self-Management",
+    "default_bottom_bienestar": "🔗 Student Wellness",
+    "delete": "Delete",
+    "language_picker": "Change language"
   }
 }

@@ -1,4 +1,4 @@
-# 📚 Algoritmos y Estructuras de Datos I
+# 📚 Algorithms and Data Structures I
 
 Centralized portal for resources, classes, and exams for the "Algoritmos y Estructuras de Datos I" course at FAMAF (UNC).
 

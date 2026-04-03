@@ -23,7 +23,14 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
 
 <Introduction title={title} bio={bio} profileImage={profileImage} imageScale={imageScale} hideCountdown={hideCountdown} />
 
-<ul id="custom-links-list" class="grid gap-y-6 pb-12 pt-4 text-center">
+<ul id="custom-links-list" 
+    class="grid gap-y-6 pb-12 pt-4 text-center"
+    data-default-top-chess={t("default_top_chess")}
+    data-default-bottom-pasos={t("default_bottom_pasos")}
+    data-default-bottom-clases={t("default_bottom_clases")}
+    data-default-top-guarani={t("default_top_guarani")}
+    data-default-bottom-bienestar={t("default_bottom_bienestar")}
+>
   <!-- Dynamic Top Link -->
   <li id="top-link-item" class="hidden">
      <a id="top-link-anchor" href="#" target="_blank" rel="noopener noreferrer" class="hover:bg-lightModeCustomLinkBackgroundHover dark:hover:bg-darkModeCustomLinkBackgroundHover hover:ring-lightModeCustomLinkOutlineHover dark:hover:ring-darkModeCustomLinkOutlineHover hover:text-lightModeCustomLinkTextHover dark:hover:text-darkModeCustomLinkTextHover flex items-center justify-center gap-2 rounded-full bg-lightModeCustomLinkBackground px-6 py-3 text-lg text-lightModeCustomLinkText ring-2 ring-lightModeCustomLinkOutline transition-all duration-200 ease-in-out hover:scale-105 dark:bg-darkModeCustomLinkBackground dark:text-darkModeCustomLinkText dark:ring-darkModeCustomLinkOutline">
@@ -72,6 +79,15 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
     if (path.startsWith('/clases')) key = 'clasesConfig';
     if (path.startsWith('/salud')) key = 'saludConfig';
 
+    const list = document.getElementById('custom-links-list');
+    const defaultLabels = {
+      chess: list?.getAttribute('data-default-top-chess'),
+      pasos: list?.getAttribute('data-default-bottom-pasos'),
+      clases: list?.getAttribute('data-default-bottom-clases'),
+      guarani: list?.getAttribute('data-default-top-guarani'),
+      bienestar: list?.getAttribute('data-default-bottom-bienestar')
+    };
+
     // Initialize default links for salud if not set
     if (key === 'saludConfig') {
       const existingConfig = JSON.parse(localStorage.getItem(key) || '{}');
@@ -79,7 +95,7 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
       // Set default top link if not exists
       if (!existingConfig.topLink || (!existingConfig.topLink.title && !existingConfig.topLink.url)) {
         existingConfig.topLink = {
-          title: '<⚙/> Taller de Ajedrez',
+          title: defaultLabels.chess,
           url: 'https://ajedrezfamaf.com/'
         };
       }
@@ -87,7 +103,7 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
       // Set default bottom link if not exists
       if (!existingConfig.bottomLink || (!existingConfig.bottomLink.title && !existingConfig.bottomLink.url)) {
         existingConfig.bottomLink = {
-          title: '<⚙/> Obra Social PASOS',
+          title: defaultLabels.pasos,
           url: 'https://unc.edu.ar/vida-estudiantil/pasos'
         };
       }
@@ -102,7 +118,7 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
       // Set default bottom link if not exists
       if (!existingConfig.bottomLink || (!existingConfig.bottomLink.title && !existingConfig.bottomLink.url)) {
         existingConfig.bottomLink = {
-          title: '<⚙/> Click para agregar tus propios links',
+          title: defaultLabels.clases,
           url: '/config'
         };
         localStorage.setItem(key, JSON.stringify(existingConfig));
@@ -116,7 +132,7 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
       // Set default top link if not exists
       if (!existingConfig.topLink || (!existingConfig.topLink.title && !existingConfig.topLink.url)) {
         existingConfig.topLink = {
-          title: '<⚙/> Autogestión (Guaraní UNC)',
+          title: defaultLabels.guarani,
           url: 'https://autogestion.guarani.unc.edu.ar/'
         };
       }
@@ -124,7 +140,7 @@ const shouldPlaceBottomLinkBeforeLast = Astro.url.pathname.startsWith('/clases')
       // Set default bottom link if not exists
       if (!existingConfig.bottomLink || (!existingConfig.bottomLink.title && !existingConfig.bottomLink.url)) {
         existingConfig.bottomLink = {
-          title: '<⚙/> 🔗 Bienestar Estudiantil',
+          title: defaultLabels.bienestar,
           url: '/salud'
         };
       }
